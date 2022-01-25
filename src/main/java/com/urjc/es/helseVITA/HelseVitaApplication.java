@@ -1,34 +1,25 @@
 package com.urjc.es.helseVITA;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import com.urjc.es.helseVITA.Entities.Admin;
 import com.urjc.es.helseVITA.Entities.HealthPersonnel;
 import com.urjc.es.helseVITA.Entities.Patient;
-import com.urjc.es.helseVITA.Entities.Question;
+import com.urjc.es.helseVITA.Enums.EnumRoles;
+import com.urjc.es.helseVITA.Enums.LetraDni;
 import com.urjc.es.helseVITA.Repositories.AdminRepository;
 import com.urjc.es.helseVITA.Repositories.HealthPersonnelRepository;
 import com.urjc.es.helseVITA.Repositories.PatientRepository;
 import com.urjc.es.helseVITA.Repositories.QuestionRepository;
-import com.urjc.es.helseVITA.Enums.EnumRoles;
-import com.urjc.es.helseVITA.Enums.LetraDni;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 //@SpringBootApplication
 
@@ -50,7 +41,7 @@ public class HelseVitaApplication {
         return (args) -> {
 
             //questionRepository.saveAndFlush(new Question("¿Vamos a sacar un 10?", "Por supuesto que sí"));
-            adminRepository.saveAndFlush(new Admin ("Nico", new BCryptPasswordEncoder().encode("ponnosun10")));
+            //adminRepository.saveAndFlush(new Admin ("Nico", new BCryptPasswordEncoder().encode("ponnosun10")));
 
 
             if (patientRepository.findAll().size() < 2) {

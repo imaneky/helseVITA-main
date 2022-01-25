@@ -15,7 +15,10 @@
 	<description>Proyecto DWS</description>
 	<properties>
 		<java.version>11</java.version>
+		<sonar.organization>imaneky</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
+
 
 
 	<dependencies>
@@ -166,10 +169,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,4 +1,4 @@
-package com.urjc.es.helseVITA;
+package com.urjc.es.helseVITA.Controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

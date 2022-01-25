@@ -3,7 +3,7 @@ import com.urjc.es.helseVITA.HelseVitaApplication;
 import com.urjc.es.helseVITA.Repositories.AdminRepository;
 import com.urjc.es.helseVITA.Repositories.PatientRepository;
 import com.urjc.es.helseVITA.Services.PatientService;
-import org.junit.jupiter.api.Test;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,24 +47,24 @@ public class Tests {
 }*/
 
 
-package com.urjc.es.helseVITA;
+import com.urjc.es.helseVITA.Entities.Patient;
+import com.urjc.es.helseVITA.Repositories.PatientRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-        import com.urjc.es.helseVITA.Entities.Patient;
-        import com.urjc.es.helseVITA.Repositories.PatientRepository;
-        import org.junit.jupiter.api.Test;
-        import org.junit.runner.RunWith;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.boot.SpringBootConfiguration;
-        import org.springframework.boot.test.context.SpringBootTest;
-        import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-        import org.springframework.test.context.junit4.SpringRunner;
+import java.util.Optional;
 
 
-        import java.util.Optional;
 @SpringBootConfiguration
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-class Tests {
+
+
+public class TestRepository {
     @Autowired
     PatientRepository patientRepository;
     @Test
