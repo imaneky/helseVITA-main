@@ -48,29 +48,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .permitAll()
 
-                //privadas
-                .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL")
+                // PRIVATE
 
-                .antMatchers("/indexAuth", "/loginExito").hasAnyRole("PATIENT")
-                .antMatchers("/mostrarPacientes", "/loginExito", "/indexAuth").hasAnyRole("ADMIN")
-
-
-
-
-
+                // FOR 3 ROLES
+                .antMatchers("/indexAuth", "/loginExito", "/myProfile").hasAnyRole("ADMIN, HEALTHPERSONNEL", "ADMIN")
+                // FOR HEALTH PERSONNEL
+                .antMatchers("/areaSanitario").hasAnyRole("HEALTHPERSONNEL")
+                // FOR PATIENT
                 .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/citaAgregada", "/cualDoctor", "/areaPaciente",
-                        "/mostrarCitas", "/nuevaCita").hasAnyRole("PATIENT") //Páginas permitidas para Paciente
-
-
+                        "/mostrarCitas", "/nuevaCita").hasAnyRole("PATIENT")
+                // FOR ADMIN
                 .antMatchers(  "/asignarNuevoPaciente", "/asignarNuevoSanitario",
                         "/buscarPaciente", "/buscarSanitario",  "/areaAdmin", "/crearPaciente", "/crearSanitario",  "/user-not-found",
-                        "/mostrarSanitario", "/userAlreadyExists", "/admin/**", "/mostrar/**").hasAnyRole("ADMIN") //Páginas permitidas para Admin
+                        "/mostrarSanitario", "/userAlreadyExists", "/admin/**", "/mostrar/**").hasAnyRole("ADMIN")
+                // FOR ADMIN AND HEALTH PERSONNEL
+                .antMatchers("/mostrarPacientes", "/preguntasSinContestar", "/preguntasSinContestar/**", "/contestarPregunta/**").hasAnyRole("ADMIN", "HEALTHPERSONNEL");
 
-                 //ADMIN AND HEALTH PERSONNEL
-                .antMatchers("/preguntasSinContestar", "/preguntasSinContestar/**", "/contestarPregunta/**").hasAnyRole("ADMIN", "HEALTHPERSONNEL")
 
 
-                .antMatchers("/myProfile").hasAnyRole("ADMIN", "HEALTHPERSONNEL", "PATIENT");
 
 
         http
