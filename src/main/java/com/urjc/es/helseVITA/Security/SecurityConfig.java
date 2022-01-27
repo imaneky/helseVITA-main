@@ -1,9 +1,6 @@
 package com.urjc.es.helseVITA.Security;
 
-import java.security.SecureRandom;
-
 import com.urjc.es.helseVITA.Enums.EnumRolUsers;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.security.SecureRandom;
 
 @Configuration
 @EnableWebSecurity
@@ -50,16 +49,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 //privadas
-
+                .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL")
+                .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/citaAgregada", "/cualDoctor", "/areaPaciente",
+                        "/indexAuth", "/loginExito", "/mostrarCitas", "/nuevaCita").hasAnyRole("PATIENT") //Páginas permitidas para Paciente
                 .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/asignarNuevoPaciente", "/asignarNuevoSanitario",
                         "/buscarPaciente", "/buscarSanitario", "/citaAgregada", "/cualDoctor", "/areaAdmin", "/areaPaciente", "/areaSanitario",
                         "/crearPaciente", "/crearSanitario", "/indexAuth", "/loginExito", "/mostrarCitas", "/nuevaCita", "/user-not-found",
                         "/mostrarPacientes", "/mostrarSanitario", "/userAlreadyExists", "/admin/**", "/mostrar/**").hasAnyRole("ADMIN") //Páginas permitidas para Admin
 
-                .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL") //Páginas permitidas para Sanitario
+                 //Páginas permitidas para Sanitario
                 .antMatchers("/preguntasSinContestar", "/preguntasSinContestar/**", "/contestarPregunta/**").hasAnyRole("ADMIN", "HEALTHPERSONNEL")
-                .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/citaAgregada", "/cualDoctor", "/areaPaciente",
-                        "/indexAuth", "/loginExito", "/mostrarCitas", "/nuevaCita").hasAnyRole("PATIENT") //Páginas permitidas para Paciente
+
 
                 .antMatchers("/myProfile").hasAnyRole("ADMIN", "HEALTHPERSONNEL", "PATIENT");
 
