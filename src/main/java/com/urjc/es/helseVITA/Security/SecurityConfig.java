@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //privadas
 
-                .antMatchers("/mostrarPacientes", "/mostrarCitas", "/loginExito", "/indexAuth", "/nuevaCita", "/areaPaciente", "/areaSanitario", "/cualDoctor", "/citaAgregada", "/appointmentNotFound","/appointmentAlreadyExist/**", "/appointment").hasAnyRole("ADMIN")
+                .antMatchers("/mostrarPacientes", "/loginExito", "/indexAuth").hasAnyRole("ADMIN")
 
                 .antMatchers("/indexAuth", "/loginExito").hasAnyRole("PATIENT")
                 .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL")
