@@ -49,11 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 //privadas
-
-                .antMatchers("/mostrarPacientes", "/loginExito", "/indexAuth").hasAnyRole("ADMIN")
+                .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL")
 
                 .antMatchers("/indexAuth", "/loginExito").hasAnyRole("PATIENT")
-                .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL")
+                .antMatchers("/mostrarPacientes", "/loginExito", "/indexAuth").hasAnyRole("ADMIN")
+
+
+
 
 
                 .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/citaAgregada", "/cualDoctor", "/areaPaciente",
