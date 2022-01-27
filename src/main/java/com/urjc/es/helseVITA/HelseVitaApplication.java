@@ -16,6 +16,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -29,6 +31,9 @@ import java.util.stream.IntStream;
 
 public class HelseVitaApplication {
 
+
+    public HelseVitaApplication() throws NoSuchAlgorithmException {
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(HelseVitaApplication.class, args);
@@ -115,15 +120,15 @@ public class HelseVitaApplication {
         }
         return healthPersonnelList;
     }
-
+    private Random r = SecureRandom.getInstanceStrong();
     private String newDni() {
         int dni[] = new int[8];
-        Random r = new Random();
+
         int total = 0;
         String dniFinal = "";
 
         for (int i = 0; i < 8; i++) {
-            dni[i] = r.nextInt(10);
+            dni[i] = this.r.nextInt(10);
         }
         for (int i = 0; i < 8; i++) {
             total += dni[i];

@@ -1,16 +1,15 @@
 package com.urjc.es.helseVITA.Entities;
 
-import javax.persistence.*;
-
 import com.urjc.es.helseVITA.Enums.EnumRolUsers;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -111,6 +110,12 @@ public class Patient implements UserDetails{
             return false;
         return this.username.equals(((Patient) patient).username);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, email, dni, name, surname1, surname2, age, rol, healthPersonnelList, appointments);
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

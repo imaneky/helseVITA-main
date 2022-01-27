@@ -94,14 +94,6 @@ public class PatientService {
         }
 
     }
-    public void newHealthPersonnel (HealthPersonnel healthPersonnel, Integer id){
-        Patient temp = patientRepository.findById(id).get();
-        temp.getHealthPersonnelList().set(healthPersonnel.getId(), healthPersonnel);
-        Patient temp2 = new Patient(id, temp.getUsername(), temp.getPassword(), 
-        temp.getEmail(), temp.getDni(), temp.getName(), temp.getSurname1(), 
-        temp.getSurname2(), temp.getAge(), temp.getHealthPersonnelList());
-        patientRepository.save(temp2);
-    }
 
     public Patient returnPatientByUsername(String username){
         var temp = patientRepository.findByUsername(username);
