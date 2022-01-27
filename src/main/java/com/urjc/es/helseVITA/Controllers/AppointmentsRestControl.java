@@ -1,45 +1,17 @@
 package com.urjc.es.helseVITA.Controllers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.urjc.es.helseVITA.Entities.*;
-import com.urjc.es.helseVITA.Exceptions.AppointmentAlreadyExistsException;
+import com.urjc.es.helseVITA.Entities.Appointment;
+import com.urjc.es.helseVITA.Services.AppointmentService;
 import com.urjc.es.helseVITA.Services.HealthPersonnelService;
 import com.urjc.es.helseVITA.Services.PatientService;
-import org.apache.commons.lang.ObjectUtils;
-import org.springframework.web.bind.annotation.RestController;
-import com.urjc.es.helseVITA.Services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collection;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.persistence.*;
 
 
-public class AppointmentDTO {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column
-    private Integer minute;
-    private Integer hour;
-    private Integer day;
-    private Integer month;
-    private Integer year;
-
-    @ManyToOne
-    @JsonIgnore
-    private HealthPersonnel healthPersonnel;
-
-    @ManyToOne
-    @JsonIgnore
-    private Patient patient;
-}
-    @RestController
+@RestController
     public class AppointmentsRestControl {
 
         @Autowired
@@ -53,16 +25,16 @@ public class AppointmentDTO {
 
         @PostMapping("/api/appointments")
         @ResponseStatus(HttpStatus.CREATED)
-        public Appointment newAppointment(@RequestBody AppointmentDTO appointment) {
-            Appointment persistentAppointment = new Appointment();
-            return appointmentService.addAppointment(persistentAppointment);
+        public Appointment newAppointment(@RequestBody Appointment appointment) {
+            //Appointment persistentAppointment = new Appointment();
+            return appointmentService.addAppointment(appointment);
         }
 
         @PutMapping("/api/appointments/{id}")
-        public ResponseEntity<Appointment> updateAppointment(@PathVariable Integer id, @RequestBody AppointmentDTO appointment) {
-            Appointment persistentAppointment = new Appointment();
+        public ResponseEntity<Appointment> updateAppointment(@PathVariable Integer id, @RequestBody Appointment appointment) {
+            //Appointment persistentAppointment = new Appointment();
             if (appointmentService.exists(id)) {
-                return new ResponseEntity<>(appointmentService.addAppointment(persistentAppointment), HttpStatus.OK);
+                return new ResponseEntity<>(appointmentService.addAppointment(appointment), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
