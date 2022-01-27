@@ -49,15 +49,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 //privadas
-                .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL")
-                .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/citaAgregada", "/cualDoctor", "/areaPaciente",
-                        "/indexAuth", "/loginExito", "/mostrarCitas", "/nuevaCita").hasAnyRole("PATIENT") //Páginas permitidas para Paciente
-                .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/asignarNuevoPaciente", "/asignarNuevoSanitario",
-                        "/buscarPaciente", "/buscarSanitario", "/citaAgregada", "/cualDoctor", "/areaAdmin", "/areaPaciente", "/areaSanitario",
-                        "/crearPaciente", "/crearSanitario", "/indexAuth", "/loginExito", "/mostrarCitas", "/nuevaCita", "/user-not-found",
-                        "/mostrarPacientes", "/mostrarSanitario", "/userAlreadyExists", "/admin/**", "/mostrar/**").hasAnyRole("ADMIN") //Páginas permitidas para Admin
 
-                 //Páginas permitidas para Sanitario
+                .antMatchers("/mostrarPacientes", "/mostrarCitas", "/loginExito", "/indexAuth", "/nuevaCita", "/areaPaciente", "/areaSanitario", "/cualDoctor", "/citaAgregada", "/appointmentNotFound","/appointmentAlreadyExist/**", "/appointment").hasAnyRole("ADMIN")
+
+                .antMatchers("/indexAuth", "/loginExito").hasAnyRole("PATIENT")
+                .antMatchers("/areaSanitario", "/indexAuth", "/loginExito", "/mostrarPacientes").hasAnyRole("HEALTHPERSONNEL")
+
+
+                .antMatchers("/appointmentAlreadyExist/**", "/appointment", "/appointmentNotFound", "/citaAgregada", "/cualDoctor", "/areaPaciente",
+                        "/mostrarCitas", "/nuevaCita").hasAnyRole("PATIENT") //Páginas permitidas para Paciente
+
+
+                .antMatchers(  "/asignarNuevoPaciente", "/asignarNuevoSanitario",
+                        "/buscarPaciente", "/buscarSanitario",  "/areaAdmin", "/crearPaciente", "/crearSanitario",  "/user-not-found",
+                        "/mostrarSanitario", "/userAlreadyExists", "/admin/**", "/mostrar/**").hasAnyRole("ADMIN") //Páginas permitidas para Admin
+
+                 //ADMIN AND HEALTH PERSONNEL
                 .antMatchers("/preguntasSinContestar", "/preguntasSinContestar/**", "/contestarPregunta/**").hasAnyRole("ADMIN", "HEALTHPERSONNEL")
 
 
