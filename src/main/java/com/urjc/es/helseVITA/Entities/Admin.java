@@ -25,7 +25,7 @@ public class Admin {
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
-    private final EnumRolUsers rol = EnumRolUsers.ROLE_ADMIN;
+    private static final EnumRolUsers rol = EnumRolUsers.ROLE_ADMIN;
     
     public Admin(){}
 

@@ -21,15 +21,15 @@ public class HealthPersonnelRestControl {
 
     @PostMapping("/api/healthPersonnels")
     @ResponseStatus(HttpStatus.CREATED)
-    public HealthPersonnel newHealthPersonnel(@RequestBody HealthPersonnel HealthPersonnel){
-        HealthPersonnel.setPassword(new BCryptPasswordEncoder().encode(HealthPersonnel.getPassword()));
-        return healthPersonnelService.addHealthPersonnel(HealthPersonnel);
+    public HealthPersonnel newHealthPersonnel(@RequestBody HealthPersonnel healthPersonnel){
+        healthPersonnel.setPassword(new BCryptPasswordEncoder().encode(healthPersonnel.getPassword()));
+        return healthPersonnelService.addHealthPersonnel(healthPersonnel);
     }
 
     @PutMapping("/api/healthPersonnels/{id}")
-    public ResponseEntity<HealthPersonnel> updateHealthPersonnel(@PathVariable Integer id, @RequestBody HealthPersonnel HealthPersonnel){
+    public ResponseEntity<HealthPersonnel> updateHealthPersonnel(@PathVariable Integer id, @RequestBody HealthPersonnel healthPersonnel){
         if (healthPersonnelService.exists(id)){
-            return new ResponseEntity<>(healthPersonnelService.addHealthPersonnel(HealthPersonnel), HttpStatus.OK);
+            return new ResponseEntity<>(healthPersonnelService.addHealthPersonnel(healthPersonnel), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

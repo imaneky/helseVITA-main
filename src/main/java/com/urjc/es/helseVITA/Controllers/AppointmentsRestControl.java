@@ -26,13 +26,11 @@ import java.util.Collection;
         @PostMapping("/api/appointments")
         @ResponseStatus(HttpStatus.CREATED)
         public Appointment newAppointment(@RequestBody Appointment appointment) {
-            //Appointment persistentAppointment = new Appointment();
             return appointmentService.addAppointment(appointment);
         }
 
         @PutMapping("/api/appointments/{id}")
         public ResponseEntity<Appointment> updateAppointment(@PathVariable Integer id, @RequestBody Appointment appointment) {
-            //Appointment persistentAppointment = new Appointment();
             if (appointmentService.exists(id)) {
                 return new ResponseEntity<>(appointmentService.addAppointment(appointment), HttpStatus.OK);
             } else {
@@ -58,27 +56,6 @@ import java.util.Collection;
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }
-
-    /* //Get all appointments from one patient
-    @GetMapping("/api/appointments/{patient}")
-    public ResponseEntity<Appointment> getPatientAppointment(@PathVariable String patient){
-        var temp = patientService.returnPatientByUsername(patient);
-        if (temp != null){
-                return new ResponseEntity<>(appointmentService.returnPatientAppointments(temp),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    } */
-
-    /* //Get all appointment from one health personnel
-    @GetMapping("/api/appointments/{healthPersonnel}")
-    public ResponseEntity<Appointment> getHealthPersonnelAppointment(@PathVariable String healthPersonnel){
-        var temp = healthPersonnelService.returnHealthPersonnelByUsername(healthPersonnel);
-        if (temp != null) {
-            return new ResponseEntity<>(appointmentService.returnHealthPersonnelAppointments(temp), HttpStatus.OK);
-
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    } */
 
 
         //Get All Users

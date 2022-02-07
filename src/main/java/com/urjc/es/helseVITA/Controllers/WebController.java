@@ -11,8 +11,6 @@ import com.urjc.es.helseVITA.Services.AppointmentService;
 import com.urjc.es.helseVITA.Services.HealthPersonnelService;
 import com.urjc.es.helseVITA.Services.PatientService;
 import com.urjc.es.helseVITA.Services.QuestionService;
-
-import org.apache.regexp.recompile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -50,23 +48,8 @@ public class WebController {
 
     Appointment appointmentToEngage;
 
-    /*
-    Si se necesita saber el usuario que está autenticado navegando al toque se hace
-    SecurityContextHolder.getContext().getAuthentication();
-    Esto nos da opcion a poder coger luego 5 cosas SI NO ES NULL, COMPROBAR
-    1) getPrincipal(), el objeto entero, no interesa
-    2) getCredentials(), password
-    3) getAuthorities(), el rol que tiene
-    4) getDetails(), más detalles como la ip, no interesa.
-    5) getName(), username!!!
-    Si se quiere enseñar una página tal cual, y luego enseñarla con cambios al que está logueado...
-    Procedimiento: crear un plantilla para el que no está logueado (index) y cuando detectamos un logged user
-    (SecurityContextHolder.getContext().getAuthentication() != null) llamamos a una plantilla preparada con mustache
-    para poder enseñar ese username o lo que queramos. Ya sabiendo el username, podemos hacer query a BBDD para pedir
-    los pacientes/docs asociados a ese username y mostrarlos :)
-    Un besote
-    Ismael de las 2:15 AM
-     */
+
+
     @RequestMapping("/")
     ModelAndView index(HttpServletRequest request, Model model) {
         var a = SecurityContextHolder.getContext().getAuthentication();
@@ -77,7 +60,7 @@ public class WebController {
             return new ModelAndView("index");
         } else {
             var mv = new ModelAndView("indexAuth");
-            mv.addObject("user", username.toString());
+            mv.addObject("user", username);
             return mv;
         }
 
@@ -97,16 +80,15 @@ public class WebController {
     }
 
 
-
     @GetMapping({"/searchHealthPersonnel"})
     public String healthPersonnelList(Model model, @RequestParam(name = "q1", required = false) String query, @RequestParam(name = "q2", required = false) String query2, HttpServletRequest request) {
         boolean b1 = false;
         boolean b2 = false;
         List<HealthPersonnel> result = null;
         List<HealthPersonnel> result2 = null;
-        List<HealthPersonnel> mi_lista;
+        List<HealthPersonnel> miLista;
         if (query != null) {
-            result = (List<HealthPersonnel>) healthPersonnelService.search(query);
+            result = healthPersonnelService.search(query);
             b1 = true;
         }
         if (query2 != null) {
@@ -114,44 +96,22 @@ public class WebController {
             b2 = true;
         }
         if (b1 && b2) {
-            mi_lista = intersectionH(result, result2);
+            miLista = intersectionH(result, result2);
         } else if (b1) {
-            mi_lista = result;
+            miLista = result;
         } else if (b2) {
-            mi_lista = result2;
+            miLista = result2;
         } else {
-            mi_lista = healthPersonnelService.returnAllHealthPersonnels();
+            miLista = healthPersonnelService.returnAllHealthPersonnels();
         }
 
         if (result2 == null) {
-            mi_lista = result;
+            miLista = result;
         }
-        model.addAttribute("object", mi_lista);
+        model.addAttribute("object", miLista);
         return "buscarSanitario";
     }
 
-    /*@GetMapping("/searchHealthPersonnel")
-    ModelAndView searchHealthPersonnel(@RequestParam Map<String,String> requestParams) {
-        String input=requestParams.get("input");
-        String text=requestParams.get("username");
-        HealthPersonnel userTemp;
-
-        if(input.equals("0")){
-            userTemp = healthPersonnelService.searchUsername(text);
-        }else if(input.equals("1")){
-            userTemp = healthPersonnelService.searchEmail(text);
-        }else if(input.equals("2")){
-            userTemp = healthPersonnelService.searchDni(text);
-        }else{
-            throw new IncorrectSearchParametersException();
-        }
-        if(userTemp!=null){
-            var mv = new ModelAndView("mostrar");
-            mv.addObject("user", userTemp);
-            return mv;
-        }
-        throw new UserNotFoundException(text);
-    }*/
 
     //Call to the exception
     @ExceptionHandler(UserNotFoundException.class)
@@ -166,15 +126,6 @@ public class WebController {
         return new ModelAndView("incorrect-parameters");
     }
 
-    /*@ExceptionHandler(AppointmentNotFoundException.class)
-    public ModelAndView exception3(AppointmentNotFoundException e, HttpServletRequest request) {
-
-    }
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ModelAndView exception4(UserAlreadyExistsException e, HttpServletRequest request) {
-
-    }*/
 
     @ExceptionHandler(AppointmentAlreadyExistsException.class)
     public ModelAndView exception5(AppointmentAlreadyExistsException e, HttpServletRequest request) {
@@ -202,34 +153,33 @@ public class WebController {
 
     @RequestMapping("/whichDoc")
     public ModelAndView addAppointmentCode(@RequestParam Map<String, String> requestParams, HttpServletRequest request) {
-        var id_paciente = Integer.parseInt(requestParams.get("id_paciente"));
+        var idPatient = Integer.parseInt(requestParams.get("idPatient"));
         var text = requestParams.get("tiempo");
-        //var id_doctor = requestParams.get("id_doctor");
         int year = Integer.parseInt((String) text.subSequence(0, 4));
         int month = Integer.parseInt((String) text.subSequence(5, 7));
         int day = Integer.parseInt((String) text.subSequence(8, 10));
         int hour = Integer.parseInt((String) text.subSequence(11, 13));
         int minute = Integer.parseInt((String) text.subSequence(14, 16));
-        var paciente = patientService.returnPatient(id_paciente);
+        var patient = patientService.returnPatient(idPatient);
 
-        List<Patient> lista_con_paciente = new ArrayList<>();
-        lista_con_paciente.add(paciente);
-        Appointment temp = this.appointmentToEngage = new Appointment(hour, minute, day, month, year, null, paciente);
+        List<Patient> patientList = new ArrayList<>();
+        patientList.add(patient);
+        Appointment temp = this.appointmentToEngage = new Appointment(hour, minute, day, month, year, null, patient);
 
 
-        var lista = healthPersonnelService.returnHealthPersonnelsByPatient(lista_con_paciente);
+        var lista = healthPersonnelService.returnHealthPersonnelsByPatient(patientList);
         var mv = new ModelAndView("cualDoctor");
         mv.addObject("cita", temp);
         mv.addObject("docs", lista);
-        mv.addObject("paciente", paciente);
+        mv.addObject("paciente", patient);
         return mv;
     }
 
     @RequestMapping("/exito")
     public ModelAndView exito(@RequestParam Map<String, String> requestParams, HttpServletRequest request) {
-        int id_doctor = Integer.parseInt(requestParams.get("id_doctor"));
-        int id_paciente = Integer.parseInt(requestParams.get("id_paciente"));
-        var paciente = patientService.returnPatient(id_paciente);
+        int idDoctor = Integer.parseInt(requestParams.get("idDoctor"));
+        int idPatient = Integer.parseInt(requestParams.get("idPatient"));
+        var paciente = patientService.returnPatient(idPatient);
         List<Appointment> appointmentList = paciente.getAppointments();
         var text = requestParams.get("tiempo");
         int year = Integer.parseInt((String) text.subSequence(0, 4));
@@ -237,19 +187,18 @@ public class WebController {
         int day = Integer.parseInt((String) text.subSequence(8, 10));
         int hour = Integer.parseInt((String) text.subSequence(11, 13));
         int minute = Integer.parseInt((String) text.subSequence(14, 16));
-        var doctor = healthPersonnelService.returnHealthPersonnel(id_doctor);
+        var doctor = healthPersonnelService.returnHealthPersonnel(idDoctor);
         Appointment temp = new Appointment(hour, minute, day, month, year, doctor, paciente);;
         for (Appointment temp2 : appointmentList) {
             if ((temp2.getYear().equals(temp.getYear())) && (temp2.getMonth().equals(temp.getMonth())) && (temp2.getDay().equals(temp.getDay()))
                     && (temp2.getHour().equals(temp.getHour())) && (temp2.getMinute().equals(temp.getMinute()))) {
-                //Que coño es este return :)
 
                 throw new AppointmentAlreadyExistsException(temp2);
             }
         }
 
-        List<Appointment> ap_patient = patientService.addAppointmentToPatient(id_paciente, temp);
-        //List<Appointment> ap_doctor = healthPersonnelService.addAppointmentToHealthPersonnel(id_doctor,this.appointmentToEngage);
+        List<Appointment> ap_patient = patientService.addAppointmentToPatient(idPatient, temp);
+
 
         var mv = new ModelAndView("exito");
 
@@ -268,16 +217,16 @@ public class WebController {
         return mv;
     }
 
-    public List<Patient> union(List<Patient> list1, List<Patient> list2, HttpServletRequest request) {
+    public List<Patient> union(List<Patient> list1, List<Patient> list2) {
         if (!(list1 == null || list2 == null)) {
-            Set<Patient> set = new HashSet<Patient>();
+            Set<Patient> set = new HashSet<>();
 
             set.addAll(list1);
             set.addAll(list2);
 
-            return new ArrayList<Patient>(set);
+            return new ArrayList<>(set);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public List<Patient> intersectionP(List<Patient> list1, List<Patient> list2) {
@@ -292,7 +241,7 @@ public class WebController {
 
             return list;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public List<HealthPersonnel> intersectionH(List<HealthPersonnel> list1, List<HealthPersonnel> list2) {
@@ -306,7 +255,7 @@ public class WebController {
             }
             return list;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @RequestMapping("/login")
@@ -405,7 +354,7 @@ public class WebController {
     public String nuevaCita(HttpServletRequest request, Model model) {
         Patient patient = patientService.returnPatientByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         var id = patient.getId();
-        model.addAttribute("id_paciente",id);
+        model.addAttribute("idPatient",id);
         List<Patient> lista = new ArrayList<>(); lista.add(patient);
         List<HealthPersonnel> docs = healthPersonnelService.returnHealthPersonnelsByPatient(lista);
         model.addAttribute("docs",docs);
@@ -432,7 +381,7 @@ public class WebController {
         boolean b2 = false;
         List<Patient> result = null;
         List<Patient> result2 = null;
-        List<Patient> mi_lista;
+        List<Patient> myList;
         if (query != null) {
             result = (List<Patient>) patientService.search(query);
             b1 = true;
@@ -442,19 +391,19 @@ public class WebController {
             b2 = true;
         }
         if (b1 && b2) {
-            mi_lista = intersectionP(result, result2);
+            myList = intersectionP(result, result2);
         } else if (b1) {
-            mi_lista = result;
+            myList = result;
         } else if (b2) {
-            mi_lista = result2;
+            myList = result2;
         } else {
-            mi_lista = (List<Patient>) patientService.returnAllPatients();
+            myList = (List<Patient>) patientService.returnAllPatients();
         }
 
         if (result2 == null) {
-            mi_lista = result;
+            myList = result;
         }
-        model.addAttribute("object", mi_lista);
+        model.addAttribute("object", myList);
         return "buscarPaciente";
     }
 
@@ -475,7 +424,7 @@ public class WebController {
         boolean b2 = false;
         List<Patient> result = null;
         List<Patient> result2 = null;
-        List<Patient> mi_lista;
+        List<Patient> myList;
         if (query != null) {
             result = (List<Patient>) patientService.search(query);
             b1 = true;
@@ -485,19 +434,19 @@ public class WebController {
             b2 = true;
         }
         if (b1 && b2) {
-            mi_lista = intersectionP(result, result2);
+            myList = intersectionP(result, result2);
         } else if (b1) {
-            mi_lista = result;
+            myList = result;
         } else if (b2) {
-            mi_lista = result2;
+            myList = result2;
         } else {
-            mi_lista = (List<Patient>) patientService.returnAllPatients();
+            myList = (List<Patient>) patientService.returnAllPatients();
         }
 
         if (result2 == null) {
-            mi_lista = result;
+            myList = result;
         }
-        model.addAttribute("object", mi_lista);
+        model.addAttribute("object", myList);
         return "buscarPaciente";
     }
     @RequestMapping("/admin/mostrarSanitarios")
@@ -506,7 +455,7 @@ public class WebController {
         boolean b2 = false;
         List<HealthPersonnel> result = null;
         List<HealthPersonnel> result2 = null;
-        List<HealthPersonnel> mi_lista;
+        List<HealthPersonnel> myList;
         if (query != null) {
             result = (List<HealthPersonnel>) healthPersonnelService.search(query);
             b1 = true;
@@ -516,19 +465,19 @@ public class WebController {
             b2 = true;
         }
         if (b1 && b2) {
-            mi_lista = intersectionH(result, result2);
+            myList = intersectionH(result, result2);
         } else if (b1) {
-            mi_lista = result;
+            myList = result;
         } else if (b2) {
-            mi_lista = result2;
+            myList = result2;
         } else {
-            mi_lista = (List<HealthPersonnel>) healthPersonnelService.returnAllHealthPersonnels();
+            myList = (List<HealthPersonnel>) healthPersonnelService.returnAllHealthPersonnels();
         }
 
         if (result2 == null) {
-            mi_lista = result;
+            myList = result;
         }
-        model.addAttribute("object", mi_lista);
+        model.addAttribute("object", myList);
         return "buscarSanitario";
     }
 
@@ -560,16 +509,6 @@ public class WebController {
         return mv;
     }
 
-    /* @RequestMapping("/postAnswer")
-    public ModelAndView postAnswer(@RequestParam Map<String, String> requestParams, HttpServletRequest request){
-        var idQuestion = Integer.parseInt(requestParams.get("id_question"));
-        var text = requestParams.get("editor");
-        var temp = questionService.returnQuestion(idQuestion);
-
-        Question question =  new Question(temp.getAnswer(), text, temp.getPersonName(), temp.getEmail(), temp.getSubjet(), idQuestion);
-        questionService.addQuestion(question);
-        return new ModelAndView("exito");
-    } */
 
     @RequestMapping("/politica")
     public String politica(){
@@ -611,26 +550,4 @@ public class WebController {
         return "error";
     }
 
-
-/* 
-    @RequestMapping("/asignarNuevoPaciente/{id}")
-    public ModelAndView asignarNuevoPaciente(@PathVariable Integer id){
-        var h = healthPersonnelService.returnHealthPersonnel(id);
-        var listaCompleta = patientService.returnAllPatients();
-        Set <Patient> listaFinal = new HashSet<Patient>();
-        Set<Patient> set = new HashSet<>();
-        List <Patient> list = patientService.returnAllPatientsByHealthPersonnel(h);
-        for (var s : list){
-            set.add(s);
-        }
-        for(var temp :listaCompleta){
-            if(!set.contains(temp)){
-                listaFinal.add(temp);
-            }
-        }
-        var mv = new ModelAndView("/asignarNuevoPaciente");
-        mv.addObject("pacientes",listaFinal);
-        mv.addObject("id_doctor", id);
-        return mv;
-    } */
 }

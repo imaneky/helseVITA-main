@@ -15,7 +15,6 @@ public class PatientRestControl {
     @Autowired
     PatientService patientService;
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/api/patients",consumes = "application/json", produces = "application/json")
     public Patient newPatient(@RequestBody Patient patient){

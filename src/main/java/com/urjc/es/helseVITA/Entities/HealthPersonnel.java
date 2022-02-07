@@ -38,7 +38,7 @@ public class HealthPersonnel {
     private Integer age;
 
     @Enumerated(EnumType.STRING)
-    private final EnumRolUsers rol = EnumRolUsers.ROLE_HEALTHPERSONNEL;
+    private static final EnumRolUsers rol = EnumRolUsers.ROLE_HEALTHPERSONNEL;
 
     @ManyToMany
     private List<Patient> patients = new ArrayList<>();
