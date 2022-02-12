@@ -11,6 +11,7 @@ import com.urjc.es.helseVITA.Services.AppointmentService;
 import com.urjc.es.helseVITA.Services.HealthPersonnelService;
 import com.urjc.es.helseVITA.Services.PatientService;
 import com.urjc.es.helseVITA.Services.QuestionService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +28,10 @@ import java.util.*;
 
 @Controller
 public class WebController {
-
+    CsrfToken token;
+    private static final String tokenstr = "token";
+    private static final String userstr = "user";
+    private static final String objectstr = "object";
     @Autowired
     PatientService patientService;
 
@@ -54,13 +58,13 @@ public class WebController {
     ModelAndView index(HttpServletRequest request, Model model) {
         var a = SecurityContextHolder.getContext().getAuthentication();
         var username = a.getName();
-        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-        model.addAttribute("token", token.getToken());
+        token = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute(tokenstr, token.getToken());
         if (username.equals("anonymousUser")) {
             return new ModelAndView("index");
         } else {
             var mv = new ModelAndView("indexAuth");
-            mv.addObject("user", username);
+            mv.addObject(userstr, username);
             return mv;
         }
 
@@ -75,7 +79,7 @@ public class WebController {
     ModelAndView view(@PathVariable Integer id, HttpServletRequest request) {
         Patient temp = patientService.returnPatient(id);
         var mv = new ModelAndView("mostrar");
-        mv.addObject("user", temp);
+        mv.addObject(userstr, temp);
         return mv;
     }
 
@@ -108,7 +112,7 @@ public class WebController {
         if (result2 == null) {
             miLista = result;
         }
-        model.addAttribute("object", miLista);
+        model.addAttribute(objectstr, miLista);
         return "buscarSanitario";
     }
 
@@ -197,12 +201,8 @@ public class WebController {
             }
         }
 
-        List<Appointment> ap_patient = patientService.addAppointmentToPatient(idPatient, temp);
 
-
-        var mv = new ModelAndView("exito");
-
-        return mv;
+        return new ModelAndView("exito");
     }
 
     @RequestMapping("/crearSanitario")
@@ -260,8 +260,8 @@ public class WebController {
 
     @RequestMapping("/login")
     public String login(HttpServletRequest request, Model model) {
-        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-        model.addAttribute("token", token.getToken());
+        token = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute(tokenstr, token.getToken());
         return "login";
     }
 
@@ -330,8 +330,8 @@ public class WebController {
 
     @RequestMapping("/myHelsevita")
     public String myHelsevita(HttpServletRequest request, Model model) {
-        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-        model.addAttribute("token", token.getToken());
+        token = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute(tokenstr, token.getToken());
         return "myHelsevita";
     }
 
@@ -377,34 +377,7 @@ public class WebController {
 
     @GetMapping({"/searchPatient"})
     public String patientList(Model model, @RequestParam(name = "q1", required = false) String query, @RequestParam(name = "q2", required = false) String query2, HttpServletRequest request) {
-        boolean b1 = false;
-        boolean b2 = false;
-        List<Patient> result = null;
-        List<Patient> result2 = null;
-        List<Patient> myList;
-        if (query != null) {
-            result = (List<Patient>) patientService.search(query);
-            b1 = true;
-        }
-        if (query2 != null) {
-            result2 = patientService.searchByAge(query2);
-            b2 = true;
-        }
-        if (b1 && b2) {
-            myList = intersectionP(result, result2);
-        } else if (b1) {
-            myList = result;
-        } else if (b2) {
-            myList = result2;
-        } else {
-            myList = (List<Patient>) patientService.returnAllPatients();
-        }
-
-        if (result2 == null) {
-            myList = result;
-        }
-        model.addAttribute("object", myList);
-        return "buscarPaciente";
+        return getString(model, query, query2);
     }
 
     @RequestMapping("/mostrarPacientes")
@@ -420,6 +393,11 @@ public class WebController {
     }
     @RequestMapping("/admin/mostrarPacientes")
     public String mostrarPacientesAdmin(Model model, @RequestParam(name = "q1", required = false) String query, @RequestParam(name = "q2", required = false) String query2,HttpServletRequest request){
+        return getString(model, query, query2);
+    }
+
+    @NotNull
+    private String getString(Model model, @RequestParam(name = "q1", required = false) String query, @RequestParam(name = "q2", required = false) String query2) {
         boolean b1 = false;
         boolean b2 = false;
         List<Patient> result = null;
@@ -446,9 +424,10 @@ public class WebController {
         if (result2 == null) {
             myList = result;
         }
-        model.addAttribute("object", myList);
+        model.addAttribute(objectstr, myList);
         return "buscarPaciente";
     }
+
     @RequestMapping("/admin/mostrarSanitarios")
     public String mostrarSanitariosAdmin(Model model, @RequestParam(name = "q1", required = false) String query, @RequestParam(name = "q2", required = false) String query2,HttpServletRequest request){
         boolean b1 = false;
@@ -457,7 +436,7 @@ public class WebController {
         List<HealthPersonnel> result2 = null;
         List<HealthPersonnel> myList;
         if (query != null) {
-            result = (List<HealthPersonnel>) healthPersonnelService.search(query);
+            result = healthPersonnelService.search(query);
             b1 = true;
         }
         if (query2 != null) {
@@ -471,13 +450,13 @@ public class WebController {
         } else if (b2) {
             myList = result2;
         } else {
-            myList = (List<HealthPersonnel>) healthPersonnelService.returnAllHealthPersonnels();
+            myList =  healthPersonnelService.returnAllHealthPersonnels();
         }
 
         if (result2 == null) {
             myList = result;
         }
-        model.addAttribute("object", myList);
+        model.addAttribute(objectstr, myList);
         return "buscarSanitario";
     }
 

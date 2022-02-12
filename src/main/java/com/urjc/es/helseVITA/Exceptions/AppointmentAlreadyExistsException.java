@@ -2,13 +2,15 @@ package com.urjc.es.helseVITA.Exceptions;
 
 import com.urjc.es.helseVITA.Entities.Appointment;
 
-public class AppointmentAlreadyExistsException extends RuntimeException{
+import javax.persistence.Transient;
 
-    Appointment appointment;
+public class AppointmentAlreadyExistsException extends RuntimeException{
+    @Transient
+    final Appointment appointment;
     private static final long serialVersionUID = 1L;
 
     public AppointmentAlreadyExistsException(Appointment appointment){
-        super("La cita " + appointment + "ya existe");
+        super("Appointment " + appointment + "already exists");
         this.appointment = appointment;
     }
 
@@ -16,7 +18,4 @@ public class AppointmentAlreadyExistsException extends RuntimeException{
         return this.appointment;
     }
 
-    public void setAppointment(Appointment appointment) {
-        this.appointment = appointment;
-    }
 }

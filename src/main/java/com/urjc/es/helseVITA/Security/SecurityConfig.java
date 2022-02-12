@@ -1,6 +1,7 @@
 package com.urjc.es.helseVITA.Security;
 
 import com.urjc.es.helseVITA.Enums.EnumRolUsers;
+import com.urjc.es.helseVITA.Enums.EnumRolUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public RepositoryUserDetailsService userDetailsService;
 
 
-    public static EnumRolUsers rol;
+    public static EnumRolUsers rolito;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,13 +45,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/index", "/login", "/", "/loginError", "/logout", "/exito", "/exito-contacto",
 
-                        "/contact-us", "/faq", "/myHelsevita", "/search-center", "/work-with-us", "/error", "/insurance", "/politica")   //Aquí se ponen las rutas que se permiten a ese rol (Anónimo en este caso)
+                        "/contact-us", "/faq", "/myHelsevita", "/search-center", "/work-with-us", "/error", "/insurance", "/politica")   //Aquí se ponen las rutas que se permiten a ese rolito (Anónimo en este caso)
 
                 .permitAll()
 
                 // PRIVATE
 
-                // FOR 3 ROLES
+                // FOR 3 rolitoES
                 .antMatchers("/indexAuth", "/loginExito", "/myProfile").hasAnyRole("ADMIN, HEALTHPERSONNEL", "PATIENT")
                 // FOR HEALTH PERSONNEL
                 .antMatchers("/areaSanitario").hasAnyRole("HEALTHPERSONNEL")

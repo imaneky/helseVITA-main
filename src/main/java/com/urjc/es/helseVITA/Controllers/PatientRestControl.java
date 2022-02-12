@@ -56,31 +56,4 @@ public class PatientRestControl {
         return patientService.returnAllPatients();
     }
 
-    @PatchMapping("/api/patients/{id}")
-    public ResponseEntity<Patient> patchPatient(@PathVariable Integer id, @RequestBody Patient patient){
-        if (patientService.exists(id)){
-            //Get actual Patient with that ID
-            Patient temp = patientService.returnPatient(id);
-
-            if (patient.getName() != null)
-                temp.setName(patient.getName());
-            if(patient.getSurname1() != null)
-                temp.setSurname1(patient.getSurname1());
-            if (patient.getSurname2() != null)
-                temp.setSurname2(patient.getSurname2());
-            if (patient.getDni() != null)
-                temp.setDni(patient.getDni());
-            if (patient.getEmail() != null)
-                temp.setEmail(patient.getEmail());
-            if (patient.getPassword() != null)
-                temp.setPassword(patient.getPassword());
-            if (patient.getUsername() != null)
-                temp.setUsername(patient.getUsername());
-            if (patient.getAge() !=null)
-                temp.setAge(patient.getAge());
-
-            return new ResponseEntity<>(patientService.addPatient(temp),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 }

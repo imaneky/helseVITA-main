@@ -43,7 +43,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 
     private String stripXSS(String value) {
         if(value != null)
-            System.out.println("escapeHTML work successfully and escapeHTML value is : " + StringEscapeUtils.escapeHtml(value));
-        return StringEscapeUtils.escapeHtml(value);
+            return StringEscapeUtils.escapeHtml(value);
+        return "";
     }
 }

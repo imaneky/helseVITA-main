@@ -31,8 +31,10 @@ import java.util.stream.IntStream;
 
 public class HelseVitaApplication {
 
+    Random r = new Random();
 
     public HelseVitaApplication() throws NoSuchAlgorithmException {
+        /* Spring Internal Method */
     }
 
     public static void main(String[] args) {
@@ -53,7 +55,7 @@ public class HelseVitaApplication {
                 patientRepository.saveAndFlush(new Patient("IsmaelEsquilichi", new BCryptPasswordEncoder().encode("root"), "ismael.esquilichi@helsevita.com", "4820096E", "Ismael", "Gómez", "Esquilichi", 20));
                 healthPersonnelRepository.saveAndFlush(new HealthPersonnel("ClaraContreras", new BCryptPasswordEncoder().encode("root"), "clara.contreras@helsevita.com", "7563289Y", "Clara", "Contreras", "Nevares", 19, "Cardióloga"));
                 patientRepository.saveAndFlush(new Patient("ImaneKadiri", new BCryptPasswordEncoder().encode("root"), "imane.kadiri@helsevita.com", "4820096E", "Imane", "Kadiri", "Yamani", 21));
-                healthPersonnelRepository.saveAndFlush(new HealthPersonnel("Denisa", new BCryptPasswordEncoder().encode("root"), "denisa.noloquieroponermal@helsevita.com", "7563289Y", "Denisa", "Maria", "Medovarschi", 24, "Cardióloga"));
+                healthPersonnelRepository.saveAndFlush(new HealthPersonnel("DenisaMedo", new BCryptPasswordEncoder().encode("root"), "denisa.noloquieroponermal@helsevita.com", "7563289Y", "DenisaMed", "Maria", "Medovarschi", 24, "Cardióloga"));
             }
 
 
@@ -79,7 +81,7 @@ public class HelseVitaApplication {
 
 
                 Patient temp = new Patient(String.format("%s%s", name, surname1), new BCryptPasswordEncoder().encode(String.format("1234%s", name)), String.format("%s.%s@helsevita.com",
-                        name.toLowerCase(), surname1.toLowerCase()), dni, name, surname1, surname2, (int) (Math.random() * 45 + 22));
+                        name.toLowerCase(), surname1.toLowerCase()), dni, name, surname1, surname2, (r.nextInt() % 80));
                 temp.setHealthPersonnelList(healthPersonnelList);
                 return temp;
             }).collect(Collectors.toList()));
@@ -103,7 +105,7 @@ public class HelseVitaApplication {
         List<Patient> patientsList = new ArrayList<>();
         while (patientsList.size() < 4) {
             int rand;
-            rand = (int) (Math.random() * patientRepository.findAll().size());
+            rand = (r.nextInt() * patientRepository.findAll().size());
             Optional<Patient> temp = patientRepository.findById(rand);
             temp.ifPresent(patientsList::add);
         }
@@ -114,13 +116,12 @@ public class HelseVitaApplication {
         List<HealthPersonnel> healthPersonnelList = new ArrayList<>();
         while (healthPersonnelList.size() < 4) {
             int rand;
-            rand = (int) (Math.random() * healthPersonnelRepository.findAll().size());
+            rand = (r.nextInt() * healthPersonnelRepository.findAll().size());
             Optional<HealthPersonnel> temp = healthPersonnelRepository.findById(rand);
             temp.ifPresent(healthPersonnelList::add);
         }
         return healthPersonnelList;
     }
-    private Random r = SecureRandom.getInstanceStrong();
     private String newDni() {
         int[] dni = new int[8];
 
@@ -134,10 +135,10 @@ public class HelseVitaApplication {
             total += dni[i];
         }
         for (int i = 0; i < 8; i++) {
+            total = total % 23;
             bld.append(8);
         }
 
-        String dniFinal = bld.toString();
-        return dniFinal;
+        return bld + String.valueOf(total);
     } 
 }

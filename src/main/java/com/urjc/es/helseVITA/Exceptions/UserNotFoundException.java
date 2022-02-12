@@ -4,7 +4,7 @@ package com.urjc.es.helseVITA.Exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 
-    String username;
+    final String username;
     private static final long serialVersionUID = 1L;
 
     public UserNotFoundException(String username) {
@@ -17,8 +17,5 @@ public class UserNotFoundException extends RuntimeException {
         return this.username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }
 

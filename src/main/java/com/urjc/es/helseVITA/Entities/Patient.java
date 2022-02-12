@@ -38,11 +38,13 @@ public class Patient implements UserDetails{
     private Integer age;
 
     @Enumerated(EnumType.STRING)
-    private final EnumRolUsers rol = EnumRolUsers.ROLE_PATIENT;
+    private static final EnumRolUsers rol = EnumRolUsers.ROLE_PATIENT;
 
+    @Transient
     @ManyToMany
     private List<HealthPersonnel> healthPersonnelList = new ArrayList<>();
 
+    @Transient
     @OneToMany(mappedBy="patient",cascade = CascadeType.ALL)
     private List<Appointment> appointments = new ArrayList<>();
 

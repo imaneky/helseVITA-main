@@ -19,10 +19,12 @@ public class XSSFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        /* NO NEED TO IMPLEMENT */
     }
 
     @Override
     public void destroy() {
+        /* NO NEED TO IMPLEMENT */
     }
 
     @Override

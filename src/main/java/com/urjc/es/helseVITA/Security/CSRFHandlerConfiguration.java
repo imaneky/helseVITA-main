@@ -3,6 +3,7 @@ package com.urjc.es.helseVITA.Security;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,7 +19,7 @@ public class CSRFHandlerConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new CSRFHandlerInterceptor());
     }
 }
-class CSRFHandlerInterceptor extends HandlerInterceptorAdapter {
+class CSRFHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(final HttpServletRequest request,
                            final @NotNull HttpServletResponse response, final @NotNull Object handler,
