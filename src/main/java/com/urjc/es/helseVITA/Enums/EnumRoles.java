@@ -9,10 +9,10 @@ public enum EnumRoles {
     ONCOLOGO, PSIQUIATRA, CIRUJANO, ODONTOLOGO, UROLOGO;    
 
     
-    public static final List<EnumRoles> VALUES = List.of(values());
-    private static final int SIZE = VALUES.size(); 
+    public static final List<EnumRoles> rolValues = List.of(values());
+    private static final int SIZE = rolValues.size();
     private static final Random RANDOM = new Random(); 
-    public static EnumRoles randomRol() { return VALUES.get(RANDOM.nextInt(SIZE)); }
+    public static EnumRoles randomRol() { return rolValues.get(RANDOM.nextInt(SIZE)); }
 
 
     @Override

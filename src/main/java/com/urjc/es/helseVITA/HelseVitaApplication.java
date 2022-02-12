@@ -43,9 +43,9 @@ public class HelseVitaApplication {
     @Bean
     //Add users, patients and health personnel.
     CommandLineRunner initData(PatientRepository patientRepository, HealthPersonnelRepository healthPersonnelRepository, AdminRepository adminRepository, QuestionRepository questionRepository) {
-        return (args) -> {
+        return args -> {
 
-            //questionRepository.saveAndFlush(new Question("¿Vamos a sacar un 10?", "Por supuesto que sí"));
+
             //adminRepository.saveAndFlush(new Admin ("Nico", new BCryptPasswordEncoder().encode("ponnosun10")));
 
 
@@ -70,7 +70,7 @@ public class HelseVitaApplication {
             Collections.shuffle(patientNames);
             Collections.shuffle(healthPersonnelNames);
 
-            patientRepository.saveAll(IntStream.rangeClosed(1, patientNames.size()).mapToObj((i) -> {
+            patientRepository.saveAll(IntStream.rangeClosed(1, patientNames.size()).mapToObj(i -> {
                 String name = patientNames.get(i - 1);
                 String surname1 = surnames.get(ThreadLocalRandom.current().nextInt(surnames.size()));
                 String surname2 = surnames.get(ThreadLocalRandom.current().nextInt(surnames.size()));
@@ -84,7 +84,7 @@ public class HelseVitaApplication {
                 return temp;
             }).collect(Collectors.toList()));
 
-            healthPersonnelRepository.saveAll(IntStream.rangeClosed(1, healthPersonnelNames.size()).mapToObj((i) -> {
+            healthPersonnelRepository.saveAll(IntStream.rangeClosed(1, healthPersonnelNames.size()).mapToObj(i -> {
                 String name = healthPersonnelNames.get(i - 1);
                 String surname1 = surnames.get(ThreadLocalRandom.current().nextInt(surnames.size()));
                 String surname2 = surnames.get(ThreadLocalRandom.current().nextInt(surnames.size()));
@@ -122,10 +122,10 @@ public class HelseVitaApplication {
     }
     private Random r = SecureRandom.getInstanceStrong();
     private String newDni() {
-        int dni[] = new int[8];
+        int[] dni = new int[8];
 
         int total = 0;
-        String dniFinal = "";
+        StringBuilder bld = new StringBuilder();
 
         for (int i = 0; i < 8; i++) {
             dni[i] = this.r.nextInt(10);
@@ -134,11 +134,10 @@ public class HelseVitaApplication {
             total += dni[i];
         }
         for (int i = 0; i < 8; i++) {
-            dniFinal = (dniFinal + String.valueOf(dni[i]));
+            bld.append(8);
         }
-        total = total % 23;
 
-        dniFinal = (dniFinal + LetraDni.fromId(total));
+        String dniFinal = bld.toString();
         return dniFinal;
     } 
 }

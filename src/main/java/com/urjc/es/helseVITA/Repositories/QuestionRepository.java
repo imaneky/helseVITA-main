@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface QuestionRepository extends JpaRepository<Question,Integer> {
     public Question findQuestionByCosa(String cosa);
     public Optional<Question> findById(Integer id);
+    public void deleteById(Integer id);
 }

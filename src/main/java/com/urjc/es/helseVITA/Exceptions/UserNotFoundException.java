@@ -8,7 +8,7 @@ public class UserNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public UserNotFoundException(String username) {
-        super("No se ha encontrado el usuario: " + username);
+        super("User not found: " + username);
         this.username = username;
     }
 

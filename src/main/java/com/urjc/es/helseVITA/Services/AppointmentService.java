@@ -23,20 +23,10 @@ public class AppointmentService {
     }
 
     public boolean exists(Integer id){
-        //Hay que mirar si funciona, deberia devolver Optional<>
         var temp = appointmentRepository.findById(id);
         return temp.isPresent();
     }
 
-    public boolean exists2(Appointment appointment){
-        //Hay que mirar si funciona, deberia devolver Optional<>
-        List <Appointment> temp = appointmentRepository.findAppointmentByYearAndMonthAndDayAndHourAndMinute(appointment.getYear(), appointment.getMonth(), appointment.getDay(), appointment.getHour(), appointment.getMinute());
-        return !temp.isEmpty();
-    }
-
-    public boolean existsHealthPersonnelAppointment(HealthPersonnel healthPersonnel){
-        return appointmentRepository.findAppointmentsByHealthPersonnel(healthPersonnel).isPresent();
-    }
 
     public void delete(Integer id){
         Appointment temp;
@@ -57,25 +47,6 @@ public class AppointmentService {
         return null;
     }
 
-    public Appointment returnPatientAppointments(Patient patient){
-        Appointment temp;
-        Optional<Appointment> tempOptional = appointmentRepository.findAppointmentsByPatient(patient);
-        if (tempOptional.isPresent()){
-            temp = tempOptional.get();
-            return temp;
-        }
-        return null;
-    }
-
-    public Appointment returnHealthPersonnelAppointments(HealthPersonnel healthPersonnel){
-        Appointment temp;
-        Optional<Appointment> tempOptional = appointmentRepository.findAppointmentsByHealthPersonnel(healthPersonnel);
-        if (tempOptional.isPresent()){
-            temp = tempOptional.get();
-            return temp;
-        }
-        return null;
-    }
 
     public Collection<Appointment> returnAllAppointmentsOfPatient(Patient patient){
         return appointmentRepository.findAppointmentsByPatientId(patient.getId());

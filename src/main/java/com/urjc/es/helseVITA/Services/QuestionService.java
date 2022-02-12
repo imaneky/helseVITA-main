@@ -33,9 +33,16 @@ public class QuestionService {
         return false;
     }
 
-    public void delete(Integer id){
-        questionRepository.delete(questionRepository.findById(id).orElse(null));
+    public void delete(Integer id) {
+        Optional <Question> temp = questionRepository.findById(id);
+        if(temp.isPresent()){
+            questionRepository.deleteById(id);
+        }
+        else {
+            System.out.println("Question not found");
+        }
     }
+
 
     public Question returnQuestion(Integer id){
         return questionRepository.findById(id).orElse(null);

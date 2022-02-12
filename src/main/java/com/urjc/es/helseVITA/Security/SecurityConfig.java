@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public RepositoryUserDetailsService userDetailsService;
 
 
-    public EnumRolUsers rol;
+    public static EnumRolUsers rol;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // PRIVATE
 
                 // FOR 3 ROLES
-                .antMatchers("/indexAuth", "/loginExito", "/myProfile").hasAnyRole("ADMIN, HEALTHPERSONNEL", "ADMIN")
+                .antMatchers("/indexAuth", "/loginExito", "/myProfile").hasAnyRole("ADMIN, HEALTHPERSONNEL", "PATIENT")
                 // FOR HEALTH PERSONNEL
                 .antMatchers("/areaSanitario").hasAnyRole("HEALTHPERSONNEL")
                 // FOR PATIENT

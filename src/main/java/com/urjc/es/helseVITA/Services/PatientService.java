@@ -8,10 +8,7 @@ import com.urjc.es.helseVITA.Repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PatientService {
@@ -80,7 +77,7 @@ public class PatientService {
             patientRepository.save(temp);
             return list;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public Collection<Patient> search(String input) {
@@ -88,7 +85,7 @@ public class PatientService {
     }
     public List<Patient> searchByAge(String input){
         if (input.equals("")){
-            return null;
+            return Collections.emptyList();
         }else {
             return patientRepository.findPatientByAge(Integer.parseInt(input));
         }

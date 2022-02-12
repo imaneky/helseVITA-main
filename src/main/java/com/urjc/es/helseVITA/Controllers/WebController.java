@@ -208,7 +208,7 @@ public class WebController {
     @RequestMapping("/crearSanitario")
     public ModelAndView crearSanitario(HttpServletRequest request) {
         List<String> cosas = new ArrayList<>();
-        var lista = EnumRoles.VALUES;
+        var lista = EnumRoles.rolValues;
         for (EnumRoles c : EnumRoles.values())
             cosas.add(c.toString());
 

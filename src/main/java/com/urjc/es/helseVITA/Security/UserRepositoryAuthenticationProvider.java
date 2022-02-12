@@ -26,12 +26,7 @@ public class UserRepositoryAuthenticationProvider implements AuthenticationProvi
         throw new BadCredentialsException("Wrong credentials");
     }
 
-    /* List<GrantedAuthority> roles = new ArrayList<>();  //No sé qué se hace aquí
-    for (String role : patient.getRol()) {
-        roles.add(new SimpleGrantedAuthority(role));
-    } */
-    //return new UsernamePasswordAuthenticationToken(patient.getName(), password, roles);
-    return null;
+     return null;
 
 }
 

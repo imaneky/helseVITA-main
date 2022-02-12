@@ -19,17 +19,12 @@ public class HealthPersonnelService {
     AppointmentService appointmentService;
 
     
-    public HealthPersonnel addHealthPersonnel(HealthPersonnel HealthPersonnel){
-        return healthPersonnelRepository.save(HealthPersonnel);
+    public HealthPersonnel addHealthPersonnel(HealthPersonnel healthPersonnel){
+        return healthPersonnelRepository.save(healthPersonnel);
     }
 
     public boolean exists(Integer id){
-        //Hay que mirar si funciona, deberia devolver Optional<>
-        if (healthPersonnelRepository.findById(id).isPresent()){
-            return true;
-        } else {
-            return false;
-        }
+        return healthPersonnelRepository.findById(id).isPresent();
     }
 
     public void delete(Integer id){
@@ -61,48 +56,13 @@ public class HealthPersonnelService {
 
     public List<HealthPersonnel> searchByAge(String input){
         if (input.equals("")){
-            return null;
-        }{
+            return Collections.emptyList();
+        }else{
             return healthPersonnelRepository.findByAge(Integer.parseInt(input));
         }
 
     }
 
-	public List <HealthPersonnel> availableHealthPersonnel(Appointment appointment) {
-        List <HealthPersonnel> temp = healthPersonnelRepository.findAll();
-
-        List<HealthPersonnel> tempOptional = appointmentService.takenHealthPersonnel(appointment.getYear(), appointment.getMonth(), appointment.getDay(), appointment.getHour(), appointment.getMinute());
-        
-        for(HealthPersonnel entry : tempOptional){
-            temp.remove(entry);
-        }
-        return temp;
-	}
-
-    /*
-    public HealthPersonnel searchUsername(String text){
-        Optional<HealthPersonnel> op = healthPersonnelRepository.findHealthPersonnelByUsername(text);
-        if (op.isPresent()){
-            return op.get();
-        }
-        return null;
-    }
-
-    public HealthPersonnel searchEmail(String text){
-        Optional<HealthPersonnel> op = healthPersonnelRepository.findHealthPersonnelByEmail(text);
-        if (op.isPresent()){
-            return op.get();
-        }
-        return null;
-    }
-
-    public HealthPersonnel searchDni(String text){
-        Optional<HealthPersonnel> op = healthPersonnelRepository.findHealthPersonnelByDni(text);
-        if (op.isPresent()){
-            return op.get();
-        }
-        return null;
-    }*/
     public HealthPersonnel returnHealthPersonnelByUsername(String username){
         var temp = healthPersonnelRepository.findHealthPersonnelByUsername(username);
         return temp.orElse(null);
@@ -110,19 +70,6 @@ public class HealthPersonnelService {
 
     public List<HealthPersonnel> returnHealthPersonnelsByPatient(List<Patient> lista){
         return healthPersonnelRepository.findHealthPersonnelsByPatientsIn(lista);
-    }
-
-    public List<Appointment> addAppointmentToHealthPersonnel(Integer id, Appointment a){
-        Optional<HealthPersonnel> op  = healthPersonnelRepository.findById(id);
-        if (op.isPresent()){
-            var temp = op.get();
-            List<Appointment> list = temp.getAppointments();
-            list.add(a);
-            temp.setAppointments(list);
-            healthPersonnelRepository.save(temp);
-            return list;
-        }
-        return null;
     }
 
     public List <Patient> addPatientToHealthPersonnel(Integer id, Patient patient){
