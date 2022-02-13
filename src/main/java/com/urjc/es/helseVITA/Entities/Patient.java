@@ -40,11 +40,9 @@ public class Patient implements UserDetails{
     @Enumerated(EnumType.STRING)
     private static final EnumRolUsers rol = EnumRolUsers.ROLE_PATIENT;
 
-    @Transient
     @ManyToMany
     private List<HealthPersonnel> healthPersonnelList = new ArrayList<>();
 
-    @Transient
     @OneToMany(mappedBy="patient",cascade = CascadeType.ALL)
     private List<Appointment> appointments = new ArrayList<>();
 

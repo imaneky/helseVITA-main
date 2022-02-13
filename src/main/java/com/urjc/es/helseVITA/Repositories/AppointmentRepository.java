@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
 
-    public List<Appointment> findAppointmentByYearAndMonthAndDayAndHourAndMinute(Integer year, Integer month, Integer day,Integer hour, Integer minute);
-    public Optional<Appointment> findAppointmentsByPatient(Patient patient);
+    List<Appointment> findAppointmentByYearAndMonthAndDayAndHourAndMinute(Integer year, Integer month, Integer day,Integer hour, Integer minute);
+    Optional<Appointment> findAppointmentsByPatient(Patient patient);
     public Optional<Appointment> findAppointmentsByHealthPersonnel(HealthPersonnel healthPersonnel);
     public List<Appointment> findAppointmentsByPatientId(Integer patientId);
 

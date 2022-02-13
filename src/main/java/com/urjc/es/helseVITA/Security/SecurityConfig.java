@@ -1,7 +1,6 @@
 package com.urjc.es.helseVITA.Security;
 
 import com.urjc.es.helseVITA.Enums.EnumRolUsers;
-import com.urjc.es.helseVITA.Enums.EnumRolUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

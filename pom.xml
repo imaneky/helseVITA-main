@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -11,6 +11,7 @@
 	<groupId>com.urjc.es</groupId>
 	<artifactId>helseVITA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
 	<name>helseVITA</name>
 	<description>Proyecto DWS</description>
 	<properties>
@@ -22,11 +23,15 @@
 
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
 			<version>3.3.1-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.17.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.owasp.esapi</groupId>
@@ -42,8 +47,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		 <dependency>
-		<groupId>org.springframework.security</groupId>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>5.4.6</version>
 		</dependency>
@@ -63,7 +68,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mustache</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -97,22 +102,9 @@
 			<version>RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.7.1</version>
-			<scope>test</scope>
-		</dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-api</artifactId>
-            <version>3.141.59</version>
-            <scope>test</scope>
-        </dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-chrome-driver</artifactId>
+			<artifactId>selenium-api</artifactId>
 			<version>3.141.59</version>
 			<scope>test</scope>
 		</dependency>
@@ -140,14 +132,6 @@
 
 		<dependency>
 			<groupId>io.rest-assured</groupId>
-			<artifactId>xml-path</artifactId>
-			<version>4.2.0</version>
-			<scope>test</scope>
-		</dependency>
-
-
-		<dependency>
-			<groupId>io.rest-assured</groupId>
 			<artifactId>json-schema-validator</artifactId>
 			<version>4.2.0</version>
 			<scope>test</scope>
@@ -158,11 +142,27 @@
 			<version>2.5.14</version>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-chrome-driver</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-api</artifactId>
 		</dependency>
 
 	</dependencies>

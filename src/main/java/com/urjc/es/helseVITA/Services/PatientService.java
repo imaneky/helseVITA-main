@@ -6,11 +6,13 @@ import com.urjc.es.helseVITA.Entities.Patient;
 import com.urjc.es.helseVITA.Repositories.AppointmentRepository;
 import com.urjc.es.helseVITA.Repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@Component
 public class PatientService {
 
     @Autowired

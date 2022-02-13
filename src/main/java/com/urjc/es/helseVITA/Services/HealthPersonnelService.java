@@ -1,6 +1,5 @@
 package com.urjc.es.helseVITA.Services;
 
-import com.urjc.es.helseVITA.Entities.Appointment;
 import com.urjc.es.helseVITA.Entities.HealthPersonnel;
 import com.urjc.es.helseVITA.Entities.Patient;
 import com.urjc.es.helseVITA.Repositories.HealthPersonnelRepository;
