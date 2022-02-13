@@ -29,14 +29,14 @@ import java.util.*;
 @Controller
 public class WebController {
     CsrfToken token;
-    private static final String tokenstr = "token";
-    private static final String userstr = "user";
-    private static final String objectstr = "object";
-    private static final String csrfstr = "_csrf";
-    private static final String usernamestr = "username";
-    private static final String errorstr = "error";
-    private static final String idpatientstr = "idPatientk";
-    private static final String questionstr = "question";
+    private static final String TOKENSTR = "token";
+    private static final String USERSTR = "user";
+    private static final String OBJECTSTR = "object";
+    private static final String CSRFSTR = "_csrf";
+    private static final String USERNAMESTR = "username";
+    private static final String ERRORSTR = "error";
+    private static final String IDPATIENTSTR = "idPatientk";
+    private static final String QUESTIONSTR = "question";
     
     
     
@@ -66,13 +66,13 @@ public class WebController {
     ModelAndView index(HttpServletRequest request, Model model) {
         var a = SecurityContextHolder.getContext().getAuthentication();
         var username = a.getName();
-        token = (CsrfToken) request.getAttribute(csrfstr);
-        model.addAttribute(tokenstr, token.getToken());
+        token = (CsrfToken) request.getAttribute(CSRFSTR);
+        model.addAttribute(TOKENSTR, token.getToken());
         if (username.equals("anonymousUser")) {
             return new ModelAndView("index");
         } else {
             var mv = new ModelAndView("indexAuth");
-            mv.addObject(userstr, username);
+            mv.addObject(USERSTR, username);
             return mv;
         }
 
@@ -87,7 +87,7 @@ public class WebController {
     ModelAndView view(@PathVariable Integer id, HttpServletRequest request) {
         Patient temp = patientService.returnPatient(id);
         var mv = new ModelAndView("mostrar");
-        mv.addObject(userstr, temp);
+        mv.addObject(USERSTR, temp);
         return mv;
     }
 
@@ -120,7 +120,7 @@ public class WebController {
         if (result2 == null) {
             miLista = result;
         }
-        model.addAttribute(objectstr, miLista);
+        model.addAttribute(OBJECTSTR, miLista);
         return "buscarSanitario";
     }
 
@@ -129,7 +129,7 @@ public class WebController {
     @ExceptionHandler(UserNotFoundException.class)
     public ModelAndView exception(UserNotFoundException e, HttpServletRequest request) {
         var mv = new ModelAndView("user-not-found");
-        mv.addObject(usernamestr, e.getUsername());
+        mv.addObject(USERNAMESTR, e.getUsername());
         return mv;
     }
 
@@ -165,7 +165,7 @@ public class WebController {
 
     @RequestMapping("/whichDoc")
     public ModelAndView addAppointmentCode(@RequestParam Map<String, String> requestParams, HttpServletRequest request) {
-        var idPatient = Integer.parseInt(requestParams.get(idpatientstr));
+        var idPatient = Integer.parseInt(requestParams.get(IDPATIENTSTR));
         var text = requestParams.get("tiempo");
         int year = Integer.parseInt((String) text.subSequence(0, 4));
         int month = Integer.parseInt((String) text.subSequence(5, 7));
@@ -190,7 +190,7 @@ public class WebController {
     @RequestMapping("/exito")
     public ModelAndView exito(@RequestParam Map<String, String> requestParams, HttpServletRequest request) {
         int idDoctor = Integer.parseInt(requestParams.get("idDoctor"));
-        int idPatient = Integer.parseInt(requestParams.get(idpatientstr));
+        int idPatient = Integer.parseInt(requestParams.get(IDPATIENTSTR));
         var paciente = patientService.returnPatient(idPatient);
         List<Appointment> appointmentList = paciente.getAppointments();
         var text = requestParams.get("tiempo");
@@ -268,8 +268,8 @@ public class WebController {
 
     @RequestMapping("/login")
     public String login(HttpServletRequest request, Model model) {
-        token = (CsrfToken) request.getAttribute(csrfstr);
-        model.addAttribute(tokenstr, token.getToken());
+        token = (CsrfToken) request.getAttribute(CSRFSTR);
+        model.addAttribute(TOKENSTR, token.getToken());
         return "login";
     }
 
@@ -280,7 +280,7 @@ public class WebController {
 
             return new ModelAndView("exito");
         }
-        return new ModelAndView(errorstr);
+        return new ModelAndView(ERRORSTR);
     }
 
     @RequestMapping("/loginExitoso")
@@ -327,7 +327,7 @@ public class WebController {
                 txt.setCosa("A donde ibas crack");
             }
         }
-        model.addAttribute(questionstr, lista);
+        model.addAttribute(QUESTIONSTR, lista);
         return "faq";
     }
 
@@ -338,8 +338,8 @@ public class WebController {
 
     @RequestMapping("/myHelsevita")
     public String myHelsevita(HttpServletRequest request, Model model) {
-        token = (CsrfToken) request.getAttribute(csrfstr);
-        model.addAttribute(tokenstr, token.getToken());
+        token = (CsrfToken) request.getAttribute(CSRFSTR);
+        model.addAttribute(TOKENSTR, token.getToken());
         return "myHelsevita";
     }
 
@@ -362,7 +362,7 @@ public class WebController {
     public String nuevaCita(HttpServletRequest request, Model model) {
         Patient patient = patientService.returnPatientByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         var id = patient.getId();
-        model.addAttribute(idpatientstr,id);
+        model.addAttribute(IDPATIENTSTR,id);
         List<Patient> lista = new ArrayList<>(); lista.add(patient);
         List<HealthPersonnel> docs = healthPersonnelService.returnHealthPersonnelsByPatient(lista);
         model.addAttribute("docs",docs);
@@ -397,7 +397,7 @@ public class WebController {
             model.addAttribute("pacientes",set);
             return "mostrarPacientes";
         }
-        return errorstr;
+        return ERRORSTR;
     }
     @RequestMapping("/admin/mostrarPacientes")
     public String mostrarPacientesAdmin(Model model, @RequestParam(name = "q1", required = false) String query, @RequestParam(name = "q2", required = false) String query2,HttpServletRequest request){
@@ -432,7 +432,7 @@ public class WebController {
         if (result2 == null) {
             myList = result;
         }
-        model.addAttribute(objectstr, myList);
+        model.addAttribute(OBJECTSTR, myList);
         return "buscarPaciente";
     }
 
@@ -464,7 +464,7 @@ public class WebController {
         if (result2 == null) {
             myList = result;
         }
-        model.addAttribute(objectstr, myList);
+        model.addAttribute(OBJECTSTR, myList);
         return "buscarSanitario";
     }
 
@@ -484,7 +484,7 @@ public class WebController {
             }
         }
         var mv = new ModelAndView("preguntasSinContestar");
-        mv.addObject(questionstr,set);
+        mv.addObject(QUESTIONSTR,set);
         return mv;
     }
 
@@ -492,7 +492,7 @@ public class WebController {
     public ModelAndView contestarPregunta(HttpServletRequest request, @PathVariable Integer id){
         Question q = questionService.returnQuestion(id);
         var mv = new ModelAndView("contestarPregunta");
-        mv.addObject(questionstr,q);
+        mv.addObject(QUESTIONSTR,q);
         return mv;
     }
 
@@ -508,7 +508,7 @@ public class WebController {
         if (!username.equals("anonymousUser")){
             if (patientService.returnPatientByUsername(username) != null){
                 var paciente = patientService.returnPatientByUsername(username);
-                model.addAttribute(usernamestr,paciente.getUsername());
+                model.addAttribute(USERNAMESTR,paciente.getUsername());
                 model.addAttribute("name",paciente.getName());
                 model.addAttribute("surname1",paciente.getSurname1());
                 model.addAttribute("surname2",paciente.getSurname2());
@@ -518,7 +518,7 @@ public class WebController {
             }
             if (healthPersonnelService.returnHealthPersonnelByUsername(username) != null){
                 var sanitario = healthPersonnelService.returnHealthPersonnelByUsername(username);
-                model.addAttribute(usernamestr,sanitario.getUsername());
+                model.addAttribute(USERNAMESTR,sanitario.getUsername());
                 model.addAttribute("name",sanitario.getName());
                 model.addAttribute("surname1",sanitario.getSurname1());
                 model.addAttribute("surname2",sanitario.getSurname2());
@@ -530,11 +530,11 @@ public class WebController {
             }
             if (adminRepository.findByUsername(username) != null){
                 var admin = adminRepository.findByUsername(username);
-                model.addAttribute(usernamestr,admin.getUsername());
+                model.addAttribute(USERNAMESTR,admin.getUsername());
                 return "my-profile-admin";
             }
         }
-        return errorstr;
+        return ERRORSTR;
     }
 
 }
